@@ -1,0 +1,27 @@
+parameters:
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    _instanceof:
+        App\Services\PaymentProcessors\PaymentProcessorInterface:
+            tags:
+                - { name: 'payment_processor', priority: 20 }
+            lazy: true
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    App\Services\PaymentProcessors\PaymentProcessorProvider:
+        arguments:
+            $paymentProcessors: !tagged_iterator payment_processor
+
+    # Внешние платёжные процессоры (vendor) — не подхватываются autowire
+    Systemeio\TestForCandidates\PaymentProcessor\PaypalPaymentProcessor: ~
+    Systemeio\TestForCandidates\PaymentProcessor\StripePaymentProcessor: ~

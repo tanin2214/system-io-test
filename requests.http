@@ -1,0 +1,103 @@
+### 1. Успешный расчет цены без купона
+POST http://127.0.0.1:8337/calculate-price
+Accept: application/json
+Content-Type: application/json
+
+{
+  "product": 1,
+  "taxNumber": "DE123456789",
+  "couponCode": null
+}
+
+### 2. Успешный расчет цены с купоном P10 (фиксированная скидка 10)
+POST http://127.0.0.1:8337/calculate-price
+Accept: application/json
+Content-Type: application/json
+
+{
+  "product": 1,
+  "taxNumber": "GR123456789",
+  "couponCode": "P10"
+}
+
+### 3. Ошибка валидации taxNumber (неверный формат)
+POST http://127.0.0.1:8337/calculate-price
+Accept: application/json
+Content-Type: application/json
+
+{
+  "product": 1,
+  "taxNumber": "DE123",
+  "couponCode": "P10"
+}
+
+### 4. Ошибка бизнес-логики: несуществующий купон
+POST http://127.0.0.1:8337/calculate-price
+Accept: application/json
+Content-Type: application/json
+
+{
+  "product": 1,
+  "taxNumber": "DE123456789",
+  "couponCode": "UNKNOWN"
+}
+
+### 5. Успешная покупка через PayPal с купоном P50 (5% скидка)
+POST http://127.0.0.1:8337/purchase
+Accept: application/json
+Content-Type: application/json
+
+{
+  "product": 1,
+  "taxNumber": "FRAB123456789",
+  "couponCode": "P50",
+  "paymentProcessor": "paypal"
+}
+
+### 6. Успешная покупка через Stripe без купона
+POST http://127.0.0.1:8337/purchase
+Accept: application/json
+Content-Type: application/json
+
+{
+  "product": 2,
+  "taxNumber": "IT12345678901",
+  "couponCode": null,
+  "paymentProcessor": "stripe"
+}
+
+### 7. Ошибка валидации: не указан платежный провайдер
+POST http://127.0.0.1:8337/purchase
+Accept: application/json
+Content-Type: application/json
+
+{
+  "product": 1,
+  "taxNumber": "DE123456789",
+  "couponCode": "P10"
+}
+
+### 8. Ошибка валидации: слишком большое значение идентификатора продукта
+POST http://127.0.0.1:8337/purchase
+Accept: application/json
+Content-Type: application/json
+
+{
+  "product": 999,
+  "taxNumber": "DE123456789",
+  "couponCode": null,
+  "paymentProcessor": "paypal"
+}
+
+### 8. Ошибка не существующего продукта
+POST http://127.0.0.1:8337/purchase
+Accept: application/json
+Content-Type: application/json
+
+{
+  "product": 8,
+  "taxNumber": "DE123456789",
+  "couponCode": null,
+  "paymentProcessor": "paypal"
+}
+

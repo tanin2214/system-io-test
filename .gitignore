@@ -1,0 +1,10 @@
+/.idea
+.env.*.local
+compose.override.yaml
+
+###> symfony/framework-bundle ###
+/.env.local
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###

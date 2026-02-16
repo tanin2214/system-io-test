@@ -1,0 +1,10 @@
+parameters:
+    level: 9
+    paths:
+        - src/
+        - tests/
+
+    ignoreErrors:
+        - identifier: property.onlyRead
+          path: src/Entity/*.php
+          message: '~Property .+::\$id is never written, only read\.~'
